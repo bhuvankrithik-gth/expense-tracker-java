@@ -1,0 +1,27 @@
+# Compiled output
+target/
+build/
+*.class
+*.jar
+
+# Environment / secrets — never commit real credentials
+.env
+.env.*
+!.env.example
+
+# Runtime data (created by the app)
+backups/
+logs/
+*.log
+
+# IDE / editor
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
