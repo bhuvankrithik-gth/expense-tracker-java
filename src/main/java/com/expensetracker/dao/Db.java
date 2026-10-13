@@ -31,9 +31,12 @@ public final class Db {
 
     /** JDBC URL built from the environment, e.g. jdbc:mysql://localhost:3306/expensetracker */
     public static String jdbcUrl() {
+        // Some hosted MySQL (e.g. TiDB Serverless) REQUIRE TLS — set DB_SSL=true.
+        boolean ssl = "true".equalsIgnoreCase(System.getenv("DB_SSL"));
         String url = "jdbc:mysql://" + env("DB_HOST", "localhost") + ":"
                 + env("DB_PORT", "3306") + "/" + env("DB_NAME", "expensetracker")
-                + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+                + (ssl ? "?useSSL=true&requireSSL=true&serverTimezone=UTC"
+                       : "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
         // Sandboxed environments: reach MySQL through a Unix socket instead
         // of TCP (see UnixSocketFactory). Unset DB_SOCKET for normal TCP.
         if (System.getenv("DB_SOCKET") != null && !System.getenv("DB_SOCKET").isBlank()) {
